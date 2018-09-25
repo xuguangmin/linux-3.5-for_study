@@ -1,0 +1,4 @@
+#!/bin/sh
+
+
+arm-linux-gcc $1

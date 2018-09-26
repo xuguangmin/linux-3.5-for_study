@@ -159,7 +159,7 @@ fi
 res="${res}${CONFIG_LOCALVERSION}${LOCALVERSION}"
 
 # scm version string if not at a tagged commit
-if test "$CONFIG_LOCALVERSION_AUTO" = "y"; then
+if test "$CONFIG_LOCALVERSION_AUTO" = "n"; then
 	# full scm version string
 	res="$res$(scm_version)"
 else
@@ -169,7 +169,7 @@ else
 	# LOCALVERSION= is not specified
 	if test "${LOCALVERSION+set}" != "set"; then
 		scm=$(scm_version --short)
-		res="$res${scm:++}"
+		#res="$res${scm:++}"
 	fi
 fi
 

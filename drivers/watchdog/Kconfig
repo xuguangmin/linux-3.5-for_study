@@ -3,12 +3,6 @@
 #
 
 
-config XGM_WATCHDOG
-	tristate "xgm >>>>>>>     xgm_watchdog.c"
-	select WATCHDOG_CORE
-	help
-	   This is a watchdog for test.
-
 menuconfig WATCHDOG
 	bool "Watchdog Timer Support"
 	---help---
@@ -59,6 +53,12 @@ config WATCHDOG_NOWAYOUT
 comment "Watchdog Device Drivers"
 
 # Architecture Independent
+config XGM_WATCHDOG
+	tristate "xgm >>>>>>>     xgm_watchdog.c"
+	depends on HAVE_S3C2410_WATCHDOG
+	select WATCHDOG_CORE
+	help
+	   This is a watchdog for test.
 
 config SOFT_WATCHDOG
 	tristate "Software watchdog"
@@ -164,13 +164,6 @@ config IXP4XX_WATCHDOG
 	  (e.g., if the boot ROM is in an unreadable state).
 
 	  Say N if you are unsure.
-
-config KS8695_WATCHDOG
-	tristate "KS8695 watchdog"
-	depends on ARCH_KS8695
-	help
-	  Watchdog timer embedded into KS8695 processor. This will reboot your
-	  system when the timeout is reached.
 
 config HAVE_S3C2410_WATCHDOG
 	bool

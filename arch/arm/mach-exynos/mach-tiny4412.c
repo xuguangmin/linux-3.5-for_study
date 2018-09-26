@@ -1763,10 +1763,18 @@ static struct platform_device samsung_device_battery = {
 };
 #endif
 
+static struct platform_device xgm_watchdog = {
+	.name	= "xgm_dev_watchdog",
+	.id = -1,
+};
+
 static struct platform_device *smdk4x12_devices[] __initdata = {
 #ifdef CONFIG_EXYNOS4_DEV_DWMCI
 	&exynos_device_dwmci,
 #endif
+
+	&xgm_watchdog,
+	
 	&s3c_device_hsmmc2,
 	&s3c_device_hsmmc3,
 	&wm8994_fixed_voltage0,

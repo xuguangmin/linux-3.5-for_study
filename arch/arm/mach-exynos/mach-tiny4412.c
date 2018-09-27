@@ -1768,6 +1768,7 @@ static struct platform_device xgm_watchdog = {
 	.id = -1,
 };
 
+
 static struct platform_device *smdk4x12_devices[] __initdata = {
 #ifdef CONFIG_EXYNOS4_DEV_DWMCI
 	&exynos_device_dwmci,

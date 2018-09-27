@@ -54,7 +54,7 @@
 #include <plat/regs-watchdog.h>
 
 #define CONFIG_S3C2410_WATCHDOG_ATBOOT		(0)
-#define CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME	(15)
+#define CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME	(8)
 
 static bool nowayout	= WATCHDOG_NOWAYOUT;
 static int tmr_margin	= CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME;
@@ -359,7 +359,8 @@ static int __devinit s3c2410wdt_probe(struct platform_device *pdev)
 	}
 
 	clk_enable(wdt_clock);
-
+	
+#if 0
 	ret = s3c2410wdt_cpufreq_register();
 	if (ret < 0) {
 		pr_err("failed to register cpufreq\n");
@@ -368,7 +369,6 @@ static int __devinit s3c2410wdt_probe(struct platform_device *pdev)
 
 	/* see if we can actually set the requested timer margin, and if
 	 * not, try the default value */
-
 	if (s3c2410wdt_set_heartbeat(&s3c2410_wdd, tmr_margin)) {
 		started = s3c2410wdt_set_heartbeat(&s3c2410_wdd,
 					CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME);
@@ -381,12 +381,12 @@ static int __devinit s3c2410wdt_probe(struct platform_device *pdev)
 			dev_info(dev, "default timer value is out of range, "
 							"cannot start\n");
 	}
-
 	ret = request_irq(wdt_irq->start, s3c2410wdt_irq, 0, pdev->name, pdev);
 	if (ret != 0) {
 		dev_err(dev, "failed to install irq (%d)\n", ret);
 		goto err_cpufreq;
 	}
+#endif
 
 	watchdog_set_nowayout(&s3c2410_wdd, nowayout);
 
@@ -408,14 +408,14 @@ static int __devinit s3c2410wdt_probe(struct platform_device *pdev)
 	}
 
 	/* print out a statement of readiness */
-
+#if 0
 	wtcon = readl(wdt_base + S3C2410_WTCON);
 
 	dev_info(dev, "watchdog %sactive, reset %sabled, irq %sabled\n",
 		 (wtcon & S3C2410_WTCON_ENABLE) ?  "" : "in",
 		 (wtcon & S3C2410_WTCON_RSTEN) ? "en" : "dis",
 		 (wtcon & S3C2410_WTCON_INTEN) ? "en" : "dis");
-
+#endif
 	return 0;
 
  err_irq:

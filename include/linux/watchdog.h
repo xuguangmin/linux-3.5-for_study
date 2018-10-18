@@ -125,12 +125,12 @@ struct watchdog_device {
 	struct cdev cdev;
 	struct device *dev;
 	struct device *parent;
-	const struct watchdog_info *info;
-	const struct watchdog_ops *ops;
+	const struct watchdog_info *info;	 //指向看门狗信息
+	const struct watchdog_ops *ops;		 //指向看门狗操作句柄
 	unsigned int bootstatus;
-	unsigned int timeout;
-	unsigned int min_timeout;
-	unsigned int max_timeout;
+	unsigned int timeout;				//看门狗喂狗的超时时间
+	unsigned int min_timeout;			//最小超时时间 
+	unsigned int max_timeout;			//最大超时时间
 	void *driver_data;
 	struct mutex lock;
 	unsigned long status;

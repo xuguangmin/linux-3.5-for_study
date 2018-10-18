@@ -71,33 +71,34 @@
  * SPARSEMEM_EXTREME with !SPARSEMEM_VMEMMAP).
  */
 enum pageflags {
-	PG_locked,		/* Page is locked. Don't touch. */
-	PG_error,
-	PG_referenced,
-	PG_uptodate,
-	PG_dirty,
-	PG_lru,
-	PG_active,
-	PG_slab,
+	PG_locked,		/* page被锁定，说明有使用者正在操作该page。. Don't touch. */
+	PG_error,	/* 状态标志，表示涉及该page的IO操作发生了错误。*/		
+	PG_referenced,/*　表示page刚刚被访问过　*/
+	PG_uptodate,  /*表示page的数据已经与后备存储器是同步的，是最新的。*/
+	PG_dirty,	  /*与后备存储器中的数据相比，该page的内容已经被修改。*/
+	PG_lru,	      /*表示该page处于LRU链表上。*/
+	PG_active,    /*page处于inactive LRU链表。PG_active和PG_referenced一起控制该page的活跃程度，这在内存回收时将会非常有用。*/
+	PG_slab,	  /*该page属于slab分配器。*/
 	PG_owner_priv_1,	/* Owner use. If pagecache, fs may use*/
-	PG_arch_1,
-	PG_reserved,
-	PG_private,		/* If pagecache, has fs-private data */
+	PG_arch_1,    /**/
+	PG_reserved,  /*设置该标志，防止该page被交换到swap。*/
+	PG_private,		/* 如果page中的private成员非空，则需要设置该标志。参考6)对private的解释。　If pagecache, has fs-private data */
 	PG_private_2,		/* If pagecache, has fs aux data */
-	PG_writeback,		/* Page is under writeback */
+	PG_writeback,		/* page中的数据正在被回写到后备存储器。 */
 #ifdef CONFIG_PAGEFLAGS_EXTENDED
 	PG_head,		/* A head page */
 	PG_tail,		/* A tail page */
 #else
 	PG_compound,		/* A compound page */
 #endif
-	PG_swapcache,		/* Swap page: swp_entry_t in private */
-	PG_mappedtodisk,	/* Has blocks allocated on-disk */
-	PG_reclaim,		/* To be reclaimed asap */
-	PG_swapbacked,		/* Page is backed by RAM/swap */
-	PG_unevictable,		/* Page is "unevictable"  */
+	PG_swapcache,		/* 表示该page处于swap cache中。　Swap page: swp_entry_t in private */
+	PG_mappedtodisk,	/* 表示page中的数据在后备存储器中有对应。　Has blocks allocated on-disk */
+	PG_reclaim,		/* 表示该page要被回收。当PFRA决定要回收某个page后，需要设置该标志。　To be reclaimed asap */
+	PG_swapbacked,		/* 该page的后备存储器是swap。　Page is backed by RAM/swap */
+	PG_unevictable,		/* 该page被锁住，不能交换，并会出现在LRU_UNEVICTABLE链表中，它包括的几种page：ramdisk或ramfs使用的页、
+            shm_locked、mlock锁定的页　Page is "unevictable"  */
 #ifdef CONFIG_MMU
-	PG_mlocked,		/* Page is vma mlocked */
+	PG_mlocked,		/* 该page在vma中被锁定，一般是通过系统调用mlock()锁定了一段内存。　Page is vma mlocked */
 #endif
 #ifdef CONFIG_ARCH_USES_PG_UNCACHED
 	PG_uncached,		/* Page has been mapped as uncached */
@@ -106,12 +107,12 @@ enum pageflags {
 	PG_hwpoison,		/* hardware poisoned page. Don't touch */
 #endif
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-	PG_compound_lock,
+	PG_compound_lock,	/**/
 #endif
-	__NR_PAGEFLAGS,
+	__NR_PAGEFLAGS,		/**/
 
 	/* Filesystems */
-	PG_checked = PG_owner_priv_1,
+	PG_checked = PG_owner_priv_1, /**/
 
 	/* Two page bits are conscripted by FS-Cache to maintain local caching
 	 * state.  These bits are set on pages belonging to the netfs's inodes
@@ -120,11 +121,11 @@ enum pageflags {
 	PG_fscache = PG_private_2,	/* page backed by cache */
 
 	/* XEN */
-	PG_pinned = PG_owner_priv_1,
-	PG_savepinned = PG_dirty,
+	PG_pinned = PG_owner_priv_1,/**/
+	PG_savepinned = PG_dirty,  /**/
 
 	/* SLOB */
-	PG_slob_free = PG_private,
+	PG_slob_free = PG_private, /**/
 };
 
 #ifndef __GENERATING_BOUNDS_H

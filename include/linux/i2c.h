@@ -158,6 +158,7 @@ extern s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client,
  * else with it. In particular, calling dev_dbg and friends on it is
  * not allowed.
  */
+//i2c_driver表示一个IIC设备驱动，i2c_client表示一个IIC设备
 struct i2c_driver {
 	unsigned int class;
 
@@ -193,9 +194,9 @@ struct i2c_driver {
 	const struct i2c_device_id *id_table;
 
 	/* Device detection callback for automatic device creation */
-	int (*detect)(struct i2c_client *, struct i2c_board_info *);
+	int (*detect)(struct i2c_client *, struct i2c_board_info *);	//自动探测设备的回调函数
 	const unsigned short *address_list;
-	struct list_head clients;
+	struct list_head clients; 	//指向驱动支持的设备
 };
 #define to_i2c_driver(d) container_of(d, struct i2c_driver, driver)
 
@@ -222,7 +223,7 @@ struct i2c_client {
 	unsigned short addr;		/* chip address - NOTE: 7bit	*/
 					/* addresses are stored in the	*/
 					/* _LOWER_ 7 bits		*/
-	char name[I2C_NAME_SIZE];
+	char name[I2C_NAME_SIZE];	// 设备的名称，最大为20个字节
 	struct i2c_adapter *adapter;	/* the adapter we sit on	*/
 	struct i2c_driver *driver;	/* and our access routines	*/
 	struct device dev;		/* the device structure		*/
@@ -357,13 +358,17 @@ struct i2c_algorithm {
 	   using common I2C messages */
 	/* master_xfer should return the number of messages successfully
 	   processed, or a negative value on error */
+	//传输函数指针，指向实现IIC总线通信协议的函数，用来确定适配器支持那些传输类型
 	int (*master_xfer)(struct i2c_adapter *adap, struct i2c_msg *msgs,
 			   int num);
+	//向实现SMBus总线通信协议的函数.SMBus和IIC之间可以通过软件方式兼容，
+	//所以这里提供了一个函数，但是一般都赋值为NULL
 	int (*smbus_xfer) (struct i2c_adapter *adap, u16 addr,
 			   unsigned short flags, char read_write,
 			   u8 command, int size, union i2c_smbus_data *data);
 
 	/* To determine what the adapter supports */
+	//返回适配器支持的功能
 	u32 (*functionality) (struct i2c_adapter *);
 };
 
@@ -371,11 +376,14 @@ struct i2c_algorithm {
  * i2c_adapter is the structure used to identify a physical i2c bus along
  * with the access algorithms necessary to access it.
  */
+//IIC总线适配器就是一个IIC总线控制器，在物理上连接若干个IIC设备。
+//IIC总线适配器本质上是一个物理设备，其主要功能是完成IIC总线控制器相关的数据通信
 struct i2c_adapter {
 	struct module *owner;
+	//允许探测的驱动类型
 	unsigned int class;		  /* classes to allow probing for */
-	const struct i2c_algorithm *algo; /* the algorithm to access the bus */
-	void *algo_data;
+	const struct i2c_algorithm *algo; /*指向适配器的驱动程序 the algorithm to access the bus */
+	void *algo_data;	//指向适配器的私有数据，根据不同的情况使用方法不同
 
 	/* data fields that are valid for all devices	*/
 	struct rt_mutex bus_lock;
@@ -385,11 +393,11 @@ struct i2c_adapter {
 	struct device dev;		/* the adapter device */
 
 	int nr;
-	char name[48];
+	char name[48];	//适配器名称
 	struct completion dev_released;
 
 	struct mutex userspace_clients_lock;
-	struct list_head userspace_clients;
+	struct list_head userspace_clients;	//连接总线上的设备的链表
 };
 #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
 

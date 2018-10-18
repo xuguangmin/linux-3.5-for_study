@@ -18,7 +18,7 @@ int main(void)
 			printf("write error\n");
 			break;
 		}
-		sleep(10);
+		sleep(6);
 	}
 	close(fd);
 	return ret;

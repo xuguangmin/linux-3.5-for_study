@@ -157,13 +157,16 @@ struct sock;
  * desired.
  */
 struct kset {
-	struct list_head list;
+	struct list_head list;//用于连接该kset中所有kobject的链表头
 	spinlock_t list_lock;
-	struct kobject kobj;
-	const struct kset_uevent_ops *uevent_ops;
+	//kset的引用计数 实际上就是内嵌的 kobject对象的引用计数
+	struct kobject kobj;//嵌入的kobject，用于计数，并被因为父类
+	const struct kset_uevent_ops *uevent_ops;//指向热插拔操作表的指针
 };
 
+//完成指定kset的初始化
 extern void kset_init(struct kset *kset);
+//完成 kset的注册和注销
 extern int __must_check kset_register(struct kset *kset);
 extern void kset_unregister(struct kset *kset);
 extern struct kset * __must_check kset_create_and_add(const char *name,
@@ -175,6 +178,7 @@ static inline struct kset *to_kset(struct kobject *kobj)
 	return kobj ? container_of(kobj, struct kset, kobj) : NULL;
 }
 
+//分别增加和减少kset对象的 引用计数
 static inline struct kset *kset_get(struct kset *k)
 {
 	return k ? to_kset(kobject_get(&k->kobj)) : NULL;

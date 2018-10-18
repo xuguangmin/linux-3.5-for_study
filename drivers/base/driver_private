@@ -1,0 +1,79 @@
+platform.c:9: * Please see Documentation/driver-model/platform.txt for more
+platform.c:565:	pdev = platform_device_alloc(driver->driver.name, -1);
+devtmpfs.c:7: * devtmpfs, a tmpfs-based filesystem is created. Every driver-core
+devtmpfs.c:427: * Create devtmpfs instance, driver-core devices will add their device
+dd.c:177:		 __func__, dev->driver->name);
+dd.c:179:	klist_add_tail(&dev->p->knode_driver, &dev->driver->p->klist_devices);
+dd.c:201:	ret = sysfs_create_link(&dev->driver->p->kobj, &dev->kobj,
+dd.c:204:		ret = sysfs_create_link(&dev->kobj, &dev->driver->p->kobj,
+dd.c:207:			sysfs_remove_link(&dev->driver->p->kobj,
+regmap/regmap-debugfs.c:42:	ret = snprintf(buf, PAGE_SIZE, "%s\n", map->dev->driver->name);
+bus.c:916: * __bus_register - register a driver-core subsystem
+isa.c:30:		if (!isa_driver->match ||
+isa.c:31:			isa_driver->match(dev, to_isa_dev(dev)->id))
+isa.c:42:	if (isa_driver->probe)
+isa.c:43:		return isa_driver->probe(dev, to_isa_dev(dev)->id);
+isa.c:52:	if (isa_driver->remove)
+isa.c:53:		return isa_driver->remove(dev, to_isa_dev(dev)->id);
+isa.c:62:	if (isa_driver->shutdown)
+isa.c:63:		isa_driver->shutdown(dev, to_isa_dev(dev)->id);
+isa.c:70:	if (isa_driver->suspend)
+isa.c:71:		return isa_driver->suspend(dev, to_isa_dev(dev)->id, state);
+isa.c:80:	if (isa_driver->resume)
+isa.c:81:		return isa_driver->resume(dev, to_isa_dev(dev)->id);
+isa.c:103:	struct device *dev = isa_driver->devices;
+isa.c:110:	driver_unregister(&isa_driver->driver);
+isa.c:119:	isa_driver->driver.bus	= &isa_bus_type;
+isa.c:120:	isa_driver->devices	= NULL;
+isa.c:122:	error = driver_register(&isa_driver->driver);
+isa.c:139:			     isa_driver->driver.name, id);
+isa.c:154:			isa_dev->next = isa_driver->devices;
+isa.c:155:			isa_driver->devices = &isa_dev->dev;
+isa.c:160:	if (!error && !isa_driver->devices)
+power/main.c:482:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:484:		callback = pm_noirq_op(dev->driver->pm, state);
+power/main.c:559:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:561:		callback = pm_late_early_op(dev->driver->pm, state);
+power/main.c:682:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:684:		callback = pm_op(dev->driver->pm, state);
+power/main.c:800:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:802:		callback = dev->driver->pm->complete;
+power/main.c:910:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:912:		callback = pm_noirq_op(dev->driver->pm, state);
+power/main.c:992:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:994:		callback = pm_late_early_op(dev->driver->pm, state);
+power/main.c:1155:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:1157:		callback = pm_op(dev->driver->pm, state);
+power/main.c:1293:	if (!callback && dev->driver && dev->driver->pm) {
+power/main.c:1295:		callback = dev->driver->pm->prepare;
+power/runtime.c:253:	if (!callback && dev->driver && dev->driver->pm)
+power/runtime.c:254:		callback = dev->driver->pm->runtime_idle;
+power/runtime.c:425:	if (!callback && dev->driver && dev->driver->pm)
+power/runtime.c:426:		callback = dev->driver->pm->runtime_suspend;
+power/runtime.c:652:	if (!callback && dev->driver && dev->driver->pm)
+power/runtime.c:653:		callback = dev->driver->pm->runtime_resume;
+power/generic_ops.c:24:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:47:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:66:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:100:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:112:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:124:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:136:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:148:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:160:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:172:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:184:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:196:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:208:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:220:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:232:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:244:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:256:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:268:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:280:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:292:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+power/generic_ops.c:304:	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+core.c:271:		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+core.c:1647: * other things than (driver-core wise very simple) network devices.
+core.c:1830:		} else if (dev->driver && dev->driver->shutdown) {
+core.c:1832:			dev->driver->shutdown(dev);

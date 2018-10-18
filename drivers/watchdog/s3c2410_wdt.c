@@ -166,6 +166,7 @@ static int s3c2410wdt_set_heartbeat(struct watchdog_device *wdd, unsigned timeou
 	unsigned int divisor = 1;
 	unsigned long wtcon;
 
+	printk("CPUFreq = %d\n", freq);
 	if (timeout < 1)
 		return -EINVAL;
 
@@ -360,7 +361,7 @@ static int __devinit s3c2410wdt_probe(struct platform_device *pdev)
 
 	clk_enable(wdt_clock);
 	
-#if 0
+#if 1
 	ret = s3c2410wdt_cpufreq_register();
 	if (ret < 0) {
 		pr_err("failed to register cpufreq\n");

@@ -221,7 +221,7 @@ static int dw_i2c_resume(struct device *dev)
 	return 0;
 }
 #endif
-
+// struct dev_pm_ops
 static SIMPLE_DEV_PM_OPS(dw_i2c_dev_pm_ops, dw_i2c_suspend, dw_i2c_resume);
 
 /* work with hotplug and coldplug */
